@@ -79,12 +79,39 @@
   - 文件上传
   - 表单处理
 
+### 5. 高级语法介绍 (advanced_syntax.go)
+- **难度**: ⭐⭐⭐⭐⭐ 高级
+- **学习目标**: 系统了解 Go 语言中常用的高级特性与惯用法
+- **运行**:
+  ```bash
+  # 运行所有主题
+  go run advanced_syntax.go
+
+  # 只看某个主题
+  go run advanced_syntax.go -topic generics
+  go run advanced_syntax.go -topic concurrent
+  ```
+- **覆盖的主题**:
+  - `interface`  接口、类型断言、类型 switch、`any`
+  - `embed`      结构体嵌入与接口嵌入（组合优于继承）
+  - `errors`     哨兵错误、自定义错误、`errors.Is` / `errors.As`、错误包装
+  - `defer`      `defer` 执行顺序、参数求值时机、`panic` / `recover`
+  - `closure`    闭包、高阶函数、循环变量捕获陷阱
+  - `options`    函数选项模式（Functional Options Pattern）
+  - `generics`   泛型（Go 1.18+）：类型参数、类型集合、泛型容器
+  - `reflect`    反射：检查与修改字段、读取 struct tag
+  - `context`    `context` 超时、取消、传值
+  - `concurrent` 高级并发：pipeline、fan-in、`select` + 超时
+- **适合人群**: 已完成前 4 个项目，希望理解 Go 惯用法与现代特性的学习者
+- **建议**: 按 `interface → embed → errors → defer → closure → options → generics → reflect → context → concurrent` 的顺序逐个阅读，并完成文件末尾的 5 道练习题
+
 ## 学习路径建议
 
 1. **第一阶段**: 密码生成器 → 掌握 Go 基础语法
 2. **第二阶段**: URL 检查器 → 掌握 Go 并发
 3. **第三阶段**: Todo API → 掌握 Web API
 4. **第四阶段**: 博客系统 → 掌握 Web 开发
+5. **第五阶段**: 高级语法介绍 → 掌握 Go 惯用法与现代特性
 
 ## 练习题
 
