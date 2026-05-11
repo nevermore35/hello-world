@@ -79,7 +79,38 @@
   - 文件上传
   - 表单处理
 
-### 5. 高级语法介绍 (advanced_syntax.go)
+### 5. 协程专题 (goroutines.go)
+- **难度**: ⭐⭐⭐ 中级
+- **学习目标**: 系统、深入地掌握 Go 协程（goroutine）与并发原语
+- **运行**:
+  ```bash
+  # 运行所有主题
+  go run goroutines.go
+
+  # 只看某个主题
+  go run goroutines.go -topic basic
+  go run goroutines.go -topic channels
+  go run goroutines.go -topic patterns
+  ```
+- **覆盖的主题**:
+  - `basic`      goroutine 启动、参数求值、GOMAXPROCS
+  - `channels`   无缓冲 / 带缓冲 / 单向 channel、关闭、range
+  - `select`     多路复用、超时、非阻塞收发、退出信号
+  - `waitgroup`  `sync.WaitGroup` 的正确用法与常见误用
+  - `mutex`      `sync.Mutex` / `sync.RWMutex` 保护共享数据
+  - `once`       `sync.Once` 实现惰性初始化 / 单例
+  - `atomic`     `sync/atomic` 原子计数与 CAS
+  - `context`    `context` 的取消、超时与传值
+  - `patterns`   Worker Pool / Pipeline / Fan-out + Fan-in / Semaphore
+  - `pitfalls`   协程泄漏、循环变量捕获、死锁、并发 map、errgroup 模式
+- **知识点**:
+  - goroutine 生命周期与调度
+  - channel 通信、关闭与方向控制
+  - sync 包常用原语（Mutex / RWMutex / WaitGroup / Once / atomic）
+  - context 在请求链路上的取消传播
+  - 经典并发模式与典型 bug 案例
+
+### 6. 高级语法介绍 (advanced_syntax.go)
 - **难度**: ⭐⭐⭐⭐⭐ 高级
 - **学习目标**: 系统了解 Go 语言中常用的高级特性与惯用法
 - **运行**:
@@ -108,10 +139,11 @@
 ## 学习路径建议
 
 1. **第一阶段**: 密码生成器 → 掌握 Go 基础语法
-2. **第二阶段**: URL 检查器 → 掌握 Go 并发
-3. **第三阶段**: Todo API → 掌握 Web API
-4. **第四阶段**: 博客系统 → 掌握 Web 开发
-5. **第五阶段**: 高级语法介绍 → 掌握 Go 惯用法与现代特性
+2. **第二阶段**: URL 检查器 → 上手 Go 并发的常见用法
+3. **第三阶段**: 协程专题 → 系统掌握 goroutine / channel / sync / context
+4. **第四阶段**: Todo API → 掌握 Web API
+5. **第五阶段**: 博客系统 → 掌握 Web 开发
+6. **第六阶段**: 高级语法介绍 → 掌握 Go 惯用法与现代特性
 
 ## 练习题
 
