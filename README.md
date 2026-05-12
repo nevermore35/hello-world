@@ -136,6 +136,74 @@
 - **适合人群**: 已完成前 4 个项目，希望理解 Go 惯用法与现代特性的学习者
 - **建议**: 按 `interface → embed → errors → defer → closure → options → generics → reflect → context → concurrent` 的顺序逐个阅读，并完成文件末尾的 5 道练习题
 
+## Gin 框架介绍
+
+Gin 是 Go 语言中非常流行的 Web 框架，底层基于标准库 `net/http`，但在路由组织、中间件处理、参数绑定和 JSON 响应等方面做了更高层的封装。对于已经学完 `todo_api.go` 的学习者来说，Gin 是从标准库 Web 开发迈向工程化开发的一个自然下一步。
+
+### Gin 的特点
+
+- **性能高**: 路由匹配效率高，适合构建高并发 Web 服务
+- **API 简洁**: 路由、中间件、请求参数处理写法直观
+- **中间件机制清晰**: 便于统一处理日志、鉴权、跨域、异常恢复
+- **JSON 开发友好**: 非常适合构建 RESTful API
+- **生态完善**: 社区中有大量认证、校验、文档等扩展方案
+
+### Gin 和 `net/http` 的关系
+
+- `net/http` 是 Go 标准库，适合打基础，帮助理解 HTTP 服务本质
+- Gin 是建立在 `net/http` 之上的封装，减少重复样板代码
+- 学习建议是先掌握标准库，再学习 Gin，这样更容易理解框架做了什么
+
+### Gin 中常见的核心概念
+
+- **Engine**: Gin 的核心实例，负责路由注册和请求分发
+- **Context (`*gin.Context`)**: 封装请求和响应，常用于取参数、返回 JSON
+- **Router Group**: 用于给一组接口统一加前缀，例如 `/api`
+- **Middleware**: 在请求处理前后执行的逻辑，例如日志、鉴权、异常恢复
+- **Binding**: 把 JSON、表单、Query 参数绑定到结构体
+
+### 最小示例
+
+```go
+package main
+
+import "github.com/gin-gonic/gin"
+
+func main() {
+	r := gin.Default()
+
+	r.GET("/ping", func(c *gin.Context) {
+		c.JSON(200, gin.H{
+			"message": "pong",
+		})
+	})
+
+	r.Run(":8080")
+}
+```
+
+### 运行方式
+
+```bash
+go mod init example
+go get github.com/gin-gonic/gin
+go run main.go
+```
+
+启动后访问 `http://localhost:8080/ping`，会得到 JSON 响应：
+
+```json
+{"message":"pong"}
+```
+
+### 适合用 Gin 练习的方向
+
+- 把 `todo_api.go` 改写成 Gin 版本
+- 为 Todo API 增加路由分组和中间件
+- 使用结构体验证请求参数
+- 增加统一错误返回格式
+- 尝试接入 JWT 登录认证
+
 ## 学习路径建议
 
 1. **第一阶段**: 密码生成器 → 掌握 Go 基础语法
@@ -153,4 +221,5 @@
 
 - [Go 语言官方文档](https://golang.org/doc/)
 - [Go 语言中文文档](https://go.zhljj.com/doc/)
+- [Gin 官方文档](https://gin-gonic.com/)
 - [Go Web 编程](https://github.com/Unknwon/the-way-to-go_ZH_CN)
