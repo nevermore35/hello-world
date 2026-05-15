@@ -136,6 +136,105 @@
 - **适合人群**: 已完成前 4 个项目，希望理解 Go 惯用法与现代特性的学习者
 - **建议**: 按 `interface → embed → errors → defer → closure → options → generics → reflect → context → concurrent` 的顺序逐个阅读，并完成文件末尾的 5 道练习题
 
+### 7. GORM 使用示例 (gorm_example.go)
+- **难度**: ⭐⭐⭐⭐ 中高级
+- **学习目标**: 掌握 Go 中最流行的 ORM 框架 GORM 的使用方法
+- **前置要求**: 已完成 Todo API，了解数据库基础
+- **运行**:
+  ```bash
+  # 初始化模块并安装依赖
+  go mod init example
+  go get gorm.io/gorm gorm.io/driver/sqlite
+
+  # 运行所有主题
+  go run gorm_example.go
+
+  # 只看某个主题
+  go run gorm_example.go -topic crud
+  go run gorm_example.go -topic query
+  go run gorm_example.go -topic associations
+  go run gorm_example.go -topic transaction
+  go run gorm_example.go -topic advanced
+  go run gorm_example.go -topic pitfalls
+  ```
+- **覆盖的主题**:
+  - `model`       模型定义、字段标签、约定优于配置
+  - `connect`     数据库连接、驱动选择、连接池配置
+  - `migrate`     自动迁移、索引、Migrator API
+  - `crud`        Create / Read / Update / Delete 基本操作
+  - `query`       条件查询、排序分页、聚合、子查询、Pluck
+  - `associations` Has One / Has Many / Many to Many、Preload、Joins
+  - `transaction`  自动事务、手动事务、嵌套事务（SavePoint）
+  - `advanced`    原生 SQL、Scopes、批量操作、软删除
+  - `pitfalls`    零值更新、N+1 查询、连接池耗尽、事务遗漏
+- **适合人群**: 已完成 Todo API 和博客系统，希望将内存存储替换为数据库的学习者
+- **建议**: 按 `model → connect → migrate → crud → query → associations → transaction → advanced → pitfalls` 的顺序逐个阅读，然后尝试完成文件末尾的 5 道练习题
+
+## GORM 框架介绍
+
+GORM 是 Go 语言中最流行的 ORM（对象关系映射）库，基于 `database/sql` 构建，提供了模型定义、自动迁移、链式查询、关联管理、事务等丰富的功能。对于已经从 `todo_api.go` 和 `blog_system.go` 掌握了 Web 开发基础的学习者来说，GORM 是将内存存储升级为数据库存储的最佳选择。
+
+### GORM 的特点
+
+- **开发效率高**: 链式 API 简洁直观，减少大量样板 SQL 代码
+- **自动迁移**: 根据 struct 定义自动创建/更新表结构
+- **关联管理**: Has One / Has Many / Belongs To / Many To Many 一站式处理
+- **事务支持**: 自动/手动事务、嵌套事务（SavePoint）
+- **多数据库支持**: SQLite、MySQL、PostgreSQL、SQL Server
+
+### GORM 和 `database/sql` 的关系
+
+- `database/sql` 是 Go 标准库，提供基础的数据库操作接口
+- GORM 是建立在 `database/sql` 之上的 ORM 层，提供更高层次的抽象
+- 学习建议是先了解标准库，再学习 GORM，这样更容易理解 ORM 解决了什么问题
+
+### 最小示例
+
+```go
+package main
+
+import (
+	"gorm.io/driver/sqlite"
+	"gorm.io/gorm"
+)
+
+type Product struct {
+	gorm.Model
+	Code  string
+	Price uint
+}
+
+func main() {
+	db, _ := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
+	db.AutoMigrate(&Product{})
+
+	db.Create(&Product{Code: "D42", Price: 100})
+
+	var product Product
+	db.First(&product, 1)                 // 按主键查询
+	db.First(&product, "code = ?", "D42") // 按条件查询
+
+	db.Model(&product).Update("Price", 200)
+	db.Delete(&product)
+}
+```
+
+### 运行方式
+
+```bash
+go mod init example
+go get gorm.io/gorm gorm.io/driver/sqlite
+go run main.go
+```
+
+### 适合用 GORM 练习的方向
+
+- 把 `todo_api.go` 的内存存储改为 GORM + SQLite
+- 把 `blog_system.go` 的 Posts / Users 改为 GORM 模型
+- 实现用户之间的关注/粉丝关系（多对多自引用）
+- 为博客添加评论系统（使用 GORM 的 Has Many 关联）
+- 实现文章标签系统（使用 GORM 的 Many To Many 关联）
+
 ## Gin 框架介绍
 
 Gin 是 Go 语言中非常流行的 Web 框架，底层基于标准库 `net/http`，但在路由组织、中间件处理、参数绑定和 JSON 响应等方面做了更高层的封装。对于已经学完 `todo_api.go` 的学习者来说，Gin 是从标准库 Web 开发迈向工程化开发的一个自然下一步。
@@ -211,15 +310,19 @@ go run main.go
 3. **第三阶段**: 协程专题 → 系统掌握 goroutine / channel / sync / context
 4. **第四阶段**: Todo API → 掌握 Web API
 5. **第五阶段**: 博客系统 → 掌握 Web 开发
-6. **第六阶段**: 高级语法介绍 → 掌握 Go 惯用法与现代特性
+6. **第六阶段**: GORM 示例 → 掌握数据库 ORM 操作
+7. **第七阶段**: 高级语法介绍 → 掌握 Go 惯用法与现代特性
 
 ## 练习题
 
 每个项目都包含练习题，可以在学完基础知识后尝试挑战！
 
+- GORM 的练习题尤其推荐**将 Todo API 或博客系统改用 GORM + SQLite**，这是最实用的综合练习。
+
 ## 相关资源
 
 - [Go 语言官方文档](https://golang.org/doc/)
 - [Go 语言中文文档](https://go.zhljj.com/doc/)
+- [GORM 官方文档](https://gorm.io/zh_CN/)
 - [Gin 官方文档](https://gin-gonic.com/)
 - [Go Web 编程](https://github.com/Unknwon/the-way-to-go_ZH_CN)
